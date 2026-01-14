@@ -73,7 +73,10 @@ SCHEMAS = {
             'status': str,
             'population': int
         },
-        'nullable_columns': ['education']
+        'nullable_columns': ['education'],
+        'categorical_values': {
+            'reason_inactive': ['childcare/pregnancy', 'discouraged', 'health-related', 'homemaker', 'other']
+        }
     },
     'africa_education_student': {
         'required_columns': ['ccode', 'country', 'year', 'age', 'gender', 'education', 'status', 'population'],
@@ -133,7 +136,10 @@ SCHEMAS = {
             'status': str,
             'population': int
         },
-        'nullable_columns': []
+        'nullable_columns': [],
+        'categorical_values': {
+            'status_poor': ['Extremely poor < USD 2.15 PPP', 'Moderately poor >= USD 2.15 and < USD 3.65 PPP', 'Not poor >= USD 3.65 PPP']
+        }
     },
     'africa_sector_employed': {
         'required_columns': ['ccode', 'country', 'year', 'age', 'gender', 'sector', 'sector_group', 'status', 'population'],
@@ -470,10 +476,15 @@ def validate_africa_csv(file_path: str, table_name: str, sample_size: int = 1000
     print(f"\n  Checking for missing columns...")
     tests.append(check_missing_columns(df, required_columns))
     
-    # 2. Check for extra columns (warn but don't fail)
+    # 2. Check for extra columns (fail if found)
+    print(f"\n  Checking for extra columns...")
     extra_columns = [col for col in df.columns if col not in required_columns]
     if extra_columns:
-        print(f"  ⚠️  Warning: Found extra columns not in schema: {extra_columns}")
+        print(f"  ❌ Found extra columns not in schema: {extra_columns}")
+        tests.append(False)
+    else:
+        print("  ✅ No extra columns found")
+        tests.append(True)
     
     # 3. Check nullable constraints
     print(f"\n  Checking nullable constraints...")
@@ -529,6 +540,43 @@ def find_csv_files(folder_path: str) -> List[str]:
     return csv_files
 
 
+def check_all_required_files_exist(folder_path: str) -> bool:
+    """Check that all 19 required CSV files exist in the data folder"""
+    print("\n" + "="*80)
+    print("Checking for existence of all required files")
+    print("="*80)
+    
+    # Get all expected table names from SCHEMAS
+    expected_tables = list(SCHEMAS.keys())
+    expected_files = [f"{table_name}.csv" for table_name in expected_tables]
+    
+    missing_files = []
+    found_files = []
+    
+    for table_name in expected_tables:
+        expected_file = f"{table_name}.csv"
+        file_path = os.path.join(folder_path, expected_file)
+        
+        # Check for both .csv and .CSV extensions
+        if os.path.exists(file_path) or os.path.exists(os.path.join(folder_path, expected_file.upper())):
+            found_files.append(expected_file)
+        else:
+            missing_files.append(expected_file)
+    
+    print(f"\nExpected files: {len(expected_files)}")
+    print(f"Found files: {len(found_files)}")
+    print(f"Missing files: {len(missing_files)}")
+    
+    if missing_files:
+        print(f"\n❌ Missing required files:")
+        for missing_file in missing_files:
+            print(f"   - {missing_file}")
+        return False
+    else:
+        print(f"\n✅ All {len(expected_files)} required files are present")
+        return True
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Validate all Africa CSV files in a folder against schema definitions"
@@ -551,6 +599,11 @@ if __name__ == "__main__":
         print(f"❌ Error: '{args.folder_path}' is not a valid directory")
         sys.exit(1)
     
+    # Check for existence of all required files
+    all_files_exist = check_all_required_files_exist(args.folder_path)
+    if not all_files_exist:
+        print("\n❌ Error: Not all required files are present. Proceeding with available files.")
+    
     # Find all CSV files in the folder
     csv_files = find_csv_files(args.folder_path)
     
@@ -558,7 +611,7 @@ if __name__ == "__main__":
         print(f"❌ No CSV files found in folder: {args.folder_path}")
         sys.exit(1)
     
-    print("="*80)
+    print("\n" + "="*80)
     print("Africa CSV Files Batch Validation")
     print("="*80)
     print(f"Folder: {args.folder_path}")
