@@ -13,7 +13,7 @@ pip install -r requirements.txt
 
 ### `util.py`
 
-Utility file to loading and manipulating data
+A helper file for loading and manipulating data
 
 
 ### `validate_data.py`
