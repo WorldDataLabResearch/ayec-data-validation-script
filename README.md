@@ -31,12 +31,12 @@ python validate_data.py <folder_path> [--sample-size N]
 python validate_data.py /path/to/csv/folder
 
 # Validate with custom sample size
-python validate_data.py /path/to/csv/folder --sample-size 5000
+python validate_data.py /path/to/csv/folder --sample-size 200000
 ```
 
 **Options:**
 - `folder_path`: Path to folder containing CSV files (required)
-- `--sample-size`: Number of rows to sample from each CSV (default: 10000)
+- `--sample-size`: Number of rows to sample from each CSV (default: 100000)
 
 **Output:**
 - Validates each CSV file found in the folder

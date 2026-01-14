@@ -434,7 +434,7 @@ def check_categorical_values_with_nullable(df: pd.DataFrame, categorical_values:
     return all_valid
 
 
-def validate_africa_csv(file_path: str, table_name: str, sample_size: int = 10000) -> bool:
+def validate_africa_csv(file_path: str, table_name: str, sample_size: int = 100000) -> bool:
     """Validate an Africa CSV file against its schema"""
     print(f"\n{'='*80}")
     print(f"Validating: {table_name}")
@@ -540,8 +540,8 @@ if __name__ == "__main__":
     parser.add_argument(
         "--sample-size",
         type=int,
-        default=10000,
-        help="Number of rows to sample from each CSV for validation (default: 10000)"
+        default=100000,
+        help="Number of rows to sample from each CSV for validation (default: 100000)"
     )
     
     args = parser.parse_args()
