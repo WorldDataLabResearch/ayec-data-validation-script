@@ -176,14 +176,13 @@ SCHEMAS = {
         'nullable_columns': []
     },
     'employed_formality_status': {
-        'required_columns': ['ccode', 'country', 'year', 'age', 'gender', 'education', 'sector_group', 'informal_formal', 'status', 'population'],
+        'required_columns': ['ccode', 'country', 'year', 'age', 'gender', 'sector_group', 'informal_formal', 'status', 'population'],
         'expected_types': {
             'ccode': str,
             'country': str,
             'year': int,
             'age': int,
             'gender': str,
-            'education': str,
             'sector_group': str,
             'informal_formal': str,
             'status': str,
