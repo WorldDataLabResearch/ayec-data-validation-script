@@ -253,7 +253,7 @@ SCHEMAS = {
         'nullable_columns': []
     },
     'subnational_employed': {
-        'required_columns': ['ccode', 'country', 'region', 'year', 'age', 'gender', 'education', 'sector', 'sector_group', 'status', 'informal_formal', 'population'],
+        'required_columns': ['ccode', 'country', 'region', 'year', 'age', 'gender', 'sector', 'sector_group', 'status', 'informal_formal', 'population'],
         'expected_types': {
             'ccode': str,
             'country': str,
@@ -261,7 +261,6 @@ SCHEMAS = {
             'year': int,
             'age': int,
             'gender': str,
-            'education': str,
             'sector': str,  # Nullable
             'sector_group': str,  # Nullable
             'status': str,
@@ -301,7 +300,7 @@ SCHEMAS = {
         'nullable_columns': ['sector_group']
     },
     'subnational_employed_employment_type': {
-        'required_columns': ['ccode', 'country', 'region', 'year', 'age', 'gender', 'education', 'sector_group', 'main_job_type', 'status', 'population'],
+        'required_columns': ['ccode', 'country', 'region', 'year', 'age', 'gender', 'sector_group', 'main_job_type', 'status', 'population'],
         'expected_types': {
             'ccode': str,
             'country': str,
@@ -309,7 +308,6 @@ SCHEMAS = {
             'year': int,
             'age': int,
             'gender': str,
-            'education': str,
             'sector_group': str,  # Nullable
             'main_job_type': str,  # Nullable
             'status': str,
