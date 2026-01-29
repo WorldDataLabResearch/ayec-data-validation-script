@@ -30,22 +30,19 @@ SCHEMAS = {
         'nullable_columns': ['share']
     },
     'africa_employed_employment_type': {
-        'required_columns': ['ccode', 'country', 'year', 'age', 'gender', 'education', 'sector_group', 'main_job_type', 'sector', 'status', 'urban_rural', 'population'],
+        'required_columns': ['ccode', 'country', 'year', 'age', 'gender', 'sector_group', 'main_job_type', 'status', 'population'],
         'expected_types': {
             'ccode': str,
             'country': str,
             'year': int,
             'age': int,
             'gender': str,
-            'education': str,
             'sector_group': str,  # Nullable
             'main_job_type': str,  # Nullable
-            'sector': str,  # Nullable
             'status': str,
-            'urban_rural': str,  # Nullable
             'population': int
         },
-        'nullable_columns': ['sector_group', 'main_job_type', 'sector', 'urban_rural'],
+        'nullable_columns': ['sector_group', 'main_job_type'],
         'categorical_values': {
             'sector_group': ['Industry', 'Agriculture', 'Services']
         }
